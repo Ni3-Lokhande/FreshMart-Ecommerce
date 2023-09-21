@@ -1,0 +1,13 @@
+
+
+.col-sm-3:hover .card-body {
+    background-color: rgb(195, 244, 194);
+    border: 1px solid green;
+    
+  }
+
+  .col-sm-3 .card-body {
+    font-size: large;
+    font-weight: bold;
+  }
+  

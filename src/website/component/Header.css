@@ -1,0 +1,34 @@
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.side-menu a:hover .title {
+  /* Add your hover styles for the title here */
+  color: #b0b435; /* Change the text color on hover */
+  font-weight: bold; /* Add bold font on hover */
+  
+}
+.side-menu {
+  margin-left: 25px;
+}
+
+.wish {
+
+  margin-left: 25px;
+  
+}
+.brand {
+  background-color: #b0b435;
+  margin-left: 170px;
+  border: none;
+}
+.categ {
+  background-color: #b0b435;
+  margin-left: 170px;
+  border: none;
+}
