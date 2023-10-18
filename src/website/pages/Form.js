@@ -18,8 +18,9 @@ const Form = () => {
   );
 
   const navigate = useNavigate();
-
+  
   console.log(formData)
+
   const onInputchange = (e) => {
     setformData({ ...formData, [e.target.name]: e.target.value });
 

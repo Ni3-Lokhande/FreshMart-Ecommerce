@@ -325,7 +325,7 @@ const Checkout = () => {
 
         <div className='mb-5 container-fluid'>
           <div className="d-grid shopping-box ">
-            <Link to="/" className="ml-auto btn hvr-hover btn-block " onClick={handlconfirm}>
+            <Link to="/myorder" className="ml-auto btn hvr-hover btn-block " onClick={handlconfirm}>
               Confirm Order
             </Link>
           </div>

@@ -20,6 +20,7 @@ import  SearchBrand  from './website/pages/SearchBrand';
 import ViewCart from './website/pages/ViewCart';
 import WishList from './website/pages/WishList';
 import Checkout from './website/pages/Checkout';
+import MyOrder from './website/pages/MyOrder';
 
 
 
@@ -50,6 +51,7 @@ const App = () => {
           <Route path='/viewcart' element={<Master Comp={ViewCart}/>}/>
           <Route path='/wishlist' element={<Master Comp={WishList}/>}/>
           <Route path='/checkout' element={<Master Comp={Checkout}/>}/>
+          <Route path='/myorder' element={<Master Comp={MyOrder}/>}/>
 
           
           

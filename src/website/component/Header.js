@@ -6,7 +6,7 @@ import { Dropdown } from 'react-bootstrap';
 import './Header.css';
 import AuthUser from '../pages/AuthUser';
 import { Modal, Button } from 'react-bootstrap';
-
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faImagePortrait } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,27 +21,28 @@ const Header = () => {
   const [cate, setcate] = useState([]);
   const [brand, setbrand] = useState([false]);
   const [showBrandMenu, setshowBrandMenu] = useState(false);
-  const { logout, token, http } = AuthUser();    
+  const { logout, token, http } = AuthUser();
   const [show, setShow] = useState(false);
   const [search, setsearch] = useState('');
   const [params, setparams] = useSearchParams();
   const [cartItems, setCartItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [wishCount, setWishCount] = useState(0);
-  const [wishItem, setWishItem] = useState([]);
+  const [wishItem, setWishItem] = useState([]);  
+
+  const [qty, setQty] = useState(1);
+  const [cartid, setCartId] = useState('');
+  const [qtyUpd, setQtyUpd] = useState({cardID:cartid, productQuantity:qty});   
+  
+
   // console.log(cartCount);
 
   const handleshow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-
-
   const handleInputchange = (e) => {
     setsearch(e.target.value)
   }
-
-
-
 
   const handleMouseEnter = () => {
     setShowMegaMenu(true);
@@ -56,6 +57,24 @@ const Header = () => {
   const handleMouseleave = () => {
     setshowBrandMenu(false);
   };
+
+
+  const inputData =(value) => {
+    setQty (value);   
+  }
+
+  const changeQty = (cartId) => {
+    setQtyUpd ({ cartID: cartId, productQuantity: qty });
+
+    http.post(`/change_product_quantity`,qtyUpd)
+      .then((res) => {
+      console.log(res.data);
+      })
+      .catch((error) => {
+      console.error('Error updating product quantity', error);
+      });
+  };
+  
 
   const getcategory = () => {
     fetch('https://vsmart.ajspire.com/api/categories')
@@ -86,8 +105,9 @@ const Header = () => {
           return [...previoussubcategory, ...filtersubcategory];
         });
       })
-    .catch((error) => console.error("Error fetching data:", error));
+      .catch((error) => console.error("Error fetching data:", error));
   };
+
   const Getbrand = () => {
     fetch('https://vsmart.ajspire.com/api/brands').then(
       response => {
@@ -135,9 +155,6 @@ const Header = () => {
   };
 
 
-
-
-
   useEffect(() => {
     getcategory();
     Getbrand();
@@ -164,17 +181,21 @@ const Header = () => {
               <div className="right-phone-box">
                 <p>Call US :- <a href="#"> +11 900 800 100</a></p>
               </div>
-              <div className="our-link">
-                <ul className='nav' >
-                  {/* <li className='nav-item'><a href="#" className='nav-link'><i className="fa fa-user s_color" /> My Account</a></li> */}
-                  <li className='nav-item'><a href="#" className='nav-link'><i className="fas fa-location-arrow" /> Our location</a></li>
-                  {/* <li className='nav-item'><Link to='/contact-us' className='nav-link'><i className="fas fa-headset" /> Contact Us</Link></li> */}
-                  {/* <li className='nav-item '><a href="#" className='nav-link'><i className="fa fa-user s_color" /> Login</a></li> */}
-                  {token ? (<li className='nav-item'><Link className='nav-link' onClick={logout} > <i className='fa fa-user s_color' /> Logout</Link></li>) :
+              <div className="">
+                <div className='row'>
 
-                    (<li className='nav-item'><Link className='nav-link' to='/login'> <i className='fa fa-user s_color' /> Login</Link></li>)}
+                  <div className='nav-item'><a href="#" className='nav-link text-light'><i className="fas fa-location-arrow" /> Our location</a></div>
 
-                </ul>
+
+                  {token ? (<div className='nav-item'><Link className='nav-link text-light' onClick={logout} > <i className='fa fa-user s_color' /> Logout</Link></div>) :
+
+                    (<div className='nav-item'><Link className='nav-link text-light' to='/login'> <i className='fa fa-user s_color' /> Login</Link></div>)}
+
+
+                  <div className='nav-item'><Link to='/myorder' className='nav-link text-light'> <i className="fa fa-shopping-bag" /> My Order</Link></div>
+
+
+                </div>
               </div>
 
             </div>
@@ -311,7 +332,7 @@ const Header = () => {
                   <a onClick={handleshow}>
                     <i className="fa fa-shopping-bag" />
                     <span className="badge">{cartCount}</span> &nbsp;
-                    <span className="title">My Cart</span>
+                    <span className="title">My Cart</span>       
                   </a>
 
                 </li>
@@ -320,7 +341,7 @@ const Header = () => {
               <Modal show={show} onHide={handleClose} style={{ height: "auto", marginLeft: '1000px' }}>
                 <Modal.Header closeButton>
                   <div className="cart-header">
-                    <div className="cart-total"><i class="fas fa-shopping-basket " style={{ textAlign: "center", color: "green", marginLeft: "90px" }}></i><span id="cart_item_count_" style={{ textAlign: "center", color: "green", marginLeft: "20px" }}>total item
+                    <div className="cart-total"><i class="fas fa-shopping-basket " style={{ textAlign: "center", color: "green", marginLeft: "90px" }}></i><span id="cart_item_count_" style={{ textAlign: "center", color: "green", marginLeft: "20px" }}>Total Item  &nbsp;
                       {cartCount}
                     </span></div>
                   </div>
@@ -332,16 +353,29 @@ const Header = () => {
                         <div>
                           <img src={`https://vsmart.ajspire.com/uploads/product_image/${el.product_image}`} alt="" style={{ height: "80px" }} />
                         </div>
-                        <div style={{ marginLeft: "40px", fontSize: "15px" }}>
+                        <div style={{ marginLeft: "10px", fontSize: "15px" }}>
                           <h3 ><b>{el.english_name}</b></h3>
                           <h4>Unit Price{el.online_price}</h4>
                           <h5 style={{ color: "blueviolet" }}>pv price{el.point_value}</h5>
                         </div>
-                        <div style={{ marginLeft: '30%' }}>
+                        <div>
+                          <table>
+                            <tr> 
+                            <td> 
+                              <input type='number' value={qty} onChange={(e) => inputData(e.target.value)}/>    </td>
+                              <td>   <button  onClick={() => changeQty(el.cart_id)}  title='Update Qty'> <FontAwesomeIcon icon={ faPlus} /> </button>  </td>
+                          
+                            </tr>
+                          </table>
+                         
+                         
+                        </div>
+
+                        <div style={{ marginLeft: '10%' }}>           
                           <a
                             href="#"
                             onClick={() => removeFromCart(el.cart_id)}
-                           style={{color:'red'}}
+                            style={{ color: 'red' }}
                           >  <i className="fas fa-trash" title='Remove'></i></a>
                         </div>
                       </div>

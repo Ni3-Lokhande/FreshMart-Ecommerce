@@ -24,6 +24,7 @@ const WishList = () => {
     http.get(`/add-to-cart/${product_id}`)
       .then((response) => {
         console.log(response.data);
+        alert('Product added to Cart');
       })
       .catch((error) => {
         console.error('Error adding product to cart:', error);
@@ -95,7 +96,7 @@ const WishList = () => {
                 <td>{index + 1}</td>
                 <td className="thumbnail-img">
                   <a href="#">
-                    <img className="img-fluid" src={`https://vsmart.ajspire.com/uploads/product_image/${el.product_image}`} alt="" />
+                    <img className="img-fluid" src={`https://vsmart.ajspire.com/uploads/product_image/${el.product_image}`} alt="" style={{height:'150px'}} />
                   </a>
                 </td>
                 <td className="name-pr">
@@ -109,7 +110,7 @@ const WishList = () => {
                 <td className="quantity-box">In Stock</td>
                 <td className="add-pr">
                   {token ? (
-                    <button className="btn btn-danger py-2 px-4" onClick={() => addToCart(el.product_id)}>Add to Cart</button>
+                    <button className="btn btn-success py-2 px-4" onClick={() => addToCart(el.product_id)}>Add to Cart</button>
                   ) : (
                     <Link to={'/login'}>Add to Cart</Link>
                   )}

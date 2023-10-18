@@ -6,10 +6,10 @@ const Master = (props) => {
   return (
     <div>
         <Header />
-       <props.Comp></props.Comp>
+       <props.Comp></props.Comp>   
         <Footer />
     </div>
   )
 }
 
-export default Master
+export default Master;
