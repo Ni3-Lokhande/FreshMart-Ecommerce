@@ -14,6 +14,7 @@ const SearchBrand = () => {
     const filterdata = product.filter(record => record.english_name.toLowerCase().includes(q.toLowerCase()));
 
     console.log(filterdata);
+    
     const getproduct = () => {
         http.get("/products  ").then((response) => {
             setproduct(response.data.products.data);
